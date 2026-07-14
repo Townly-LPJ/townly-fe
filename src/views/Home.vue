@@ -1,4 +1,6 @@
 <script setup>
+import { Search, MapPin } from "lucide-vue-next";
+
 import CategoryBoard from "../components/CategoryBoard.vue";
 import CtaSection from "../components/CtaSection.vue";
 
@@ -15,7 +17,9 @@ const scrollToCategories = () => {
       <div class="hero__shade"></div>
 
       <div class="hero__content container">
-        <span class="hero__badge"> ⌾ 대전 권역 로컬 커뮤니티 </span>
+        <span class="hero__badge"
+          ><MapPin :size="16" :stroke-width="2.4" />대전 권역 로컬 커뮤니티
+        </span>
 
         <h1 class="hero__title">
           대전의 진짜 정보,<br />
@@ -26,10 +30,14 @@ const scrollToCategories = () => {
 
         <div class="hero__actions">
           <button class="button button--primary" @click="scrollToCategories">
+            <Search :size="19" :stroke-width="2.3" />
             게시판 둘러보기
           </button>
 
-          <button class="button button--secondary">지도로 보기</button>
+          <button class="button button--secondary">
+            <MapPin :size="19" :stroke-width="2.3" />
+            지도로 보기
+          </button>
         </div>
       </div>
     </section>

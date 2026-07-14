@@ -1,14 +1,18 @@
+<script setup>
+import { Compass } from "lucide-vue-next";
+</script>
+
 <template>
   <footer class="site-footer">
     <div class="site-footer__main container">
       <div class="footer-brand">
         <div class="footer-brand__title">
-          <span class="footer-brand__logo">◎</span>
+          <span class="footer-brand__logo"><Compass :size="20" :stroke-width="2.5" /></span>
           <strong>townly</strong>
         </div>
 
         <p>
-          공공데이터에 흩어진 대전의 여행 정보를 한 곳에서.
+          공공데이터에 흩어진 대전의 여행 정보를 한 곳에서.<br />
           회원가입 없이 주민과 여행자가 함께 만드는 로컬 커뮤니티입니다.
         </p>
       </div>
@@ -33,9 +37,7 @@
 
     <div class="site-footer__bottom">
       <div class="container">
-        <p>
-          © 2026 townly · 대전 권역 MVP · 데이터는 각 기관의 이용약관을 따릅니다.
-        </p>
+        <p>© 2026 townly · 대전 권역 MVP · 데이터는 각 기관의 이용약관을 따릅니다.</p>
       </div>
     </div>
   </footer>

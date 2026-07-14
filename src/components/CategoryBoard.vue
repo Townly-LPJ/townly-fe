@@ -11,37 +11,37 @@ const categories = [
   {
     icon: "🍴",
     title: "맛집",
-    code: "RESTAURANT",
+    code: "restaurant",
     description: "성심당부터 로컬 노포까지",
   },
   {
     icon: "📍",
     title: "명소 · 관광",
-    code: "ATTRACTION",
+    code: "attraction",
     description: "엑스포 · 수목원 · 대청호",
   },
   {
     icon: "🎉",
     title: "축제 · 행사",
-    code: "FESTIVAL",
+    code: "festival",
     description: "지금 열리는 대전의 축제",
   },
   {
     icon: "☕",
     title: "카페 · 디저트",
-    code: "CAFE_DESSERT",
+    code: "cafe_dessert",
     description: "감성 카페와 빵지순례",
   },
   {
     icon: "💡",
     title: "여행 팁",
-    code: "TRAVEL_TIP",
+    code: "travel_tip",
     description: "교통 · 주차 · 코스 꿀팁",
   },
   {
     icon: "💬",
     title: "동네 후기",
-    code: "LOCAL_REVIEW",
+    code: "local_review",
     description: "주민이 남기는 솔직 후기",
   },
 ];
