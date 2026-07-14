@@ -98,6 +98,15 @@ watch(
   },
   { immediate: true },
 );
+
+const goWrite = () => {
+  router.push({
+    name: "PostWrite",
+    query: {
+      category: info.value.apiCode,
+    },
+  });
+};
 </script>
 
 <template>
@@ -126,7 +135,7 @@ watch(
           <p>{{ info.subtitle }}</p>
         </div>
 
-        <button type="button" class="write-btn">
+        <button type="button" class="write-btn" @click="goWrite">
           <SquarePen :size="18" :stroke-width="2.3" />
           글쓰기
         </button>
