@@ -1,0 +1,145 @@
+.write-container {
+    width: min(620px, calc(100% - 48px));
+    margin: 60px auto;
+    color: #29241f;
+}
+
+
+.write-container h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+
+.subtitle {
+    margin-top: 10px;
+    color: var(--color-muted);
+}
+
+
+/* 카테고리 */
+.category-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.category-list button {
+    padding: 10px 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    background: white;
+    color: #29241f;
+
+    transition: 0.2s;
+}
+
+.category-list button:hover {
+    border-color: var(--color-primary);
+}
+
+.category-list button.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+
+/* 입력 영역 */
+.field {
+    margin-top: 25px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 10px;
+
+    font-weight: 700;
+    color: #29241f;
+}
+
+
+.write-container input,
+.write-container textarea {
+    width: 100%;
+    padding: 15px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+
+    background: white;
+    color: #29241f;
+
+    font-size: 15px;
+}
+
+
+.write-container input::placeholder,
+.write-container textarea::placeholder {
+    color: #b7aaa0;
+}
+
+
+.write-container input:focus,
+.write-container textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+
+textarea {
+    height: 250px;
+    resize: none;
+}
+
+
+/* 닉네임 / 비밀번호 */
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* 버튼 */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 30px;
+}
+
+
+.cancel,
+.submit {
+    padding: 12px 30px;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+}
+
+
+.cancel {
+    border: 1px solid var(--color-border);
+
+    background: white;
+    color: var(--color-muted);
+}
+
+
+.submit {
+    border: none;
+
+    background: var(--color-primary);
+    color: white;
+}
+
+
+.submit:hover {
+    background: var(--color-primary-dark);
+}
