@@ -2,6 +2,8 @@
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import { timeAgo } from "../utils/date";
+
 
 const route = useRoute();
 const router = useRouter();
@@ -195,7 +197,7 @@ onMounted(fetchPosts);
 
 
             <span>
-              {{ post.created_at }}
+            · {{ timeAgo(post.created_at) }}
             </span>
 
           </div>
