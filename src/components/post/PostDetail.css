@@ -1,0 +1,162 @@
+.post-detail-page {
+  min-height: 680px;
+  padding: 48px 0 100px;
+  background: #fbf5eb;
+}
+
+.post-detail-container {
+  width: min(920px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.post-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 22px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+  color: #91857a;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.post-detail-card {
+  padding: 40px;
+  border: 1px solid #eadfd2;
+  border-radius: 20px;
+  background: white;
+}
+
+.post-detail-category {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 8px;
+
+  background: #ffe8de;
+  color: #f25a2a;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.post-detail-title {
+  margin: 18px 0 24px;
+
+  color: #29241f;
+  font-size: 36px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.post-detail-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-detail-avatar {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+  background: #f5eee4;
+
+  color: #675c52;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.post-detail-author strong {
+  display: block;
+  color: #29241f;
+  font-size: 14px;
+}
+
+.post-detail-author p {
+  margin: 4px 0 0;
+  color: #9a8e84;
+  font-size: 13px;
+}
+
+.post-detail-divider {
+  height: 1px;
+  margin: 24px 0 30px;
+  background: #eadfd2;
+}
+
+.post-detail-content {
+  min-height: 150px;
+
+  color: #514943;
+  font-size: 16px;
+  line-height: 2;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post-detail-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 36px;
+}
+
+.post-detail-actions-left,
+.post-detail-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-detail-action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 11px 17px;
+
+  border: 1px solid #eadfd2;
+  border-radius: 12px;
+
+  background: white;
+  color: #5d544c;
+
+  font-weight: 700;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.post-detail-action-button:hover {
+  border-color: #f25a2a;
+  color: #f25a2a;
+}
+
+.post-detail-message {
+  padding: 60px 0;
+  text-align: center;
+  color: #91857a;
+}
+
+@media (max-width: 640px) {
+  .post-detail-card {
+    padding: 26px 20px;
+  }
+
+  .post-detail-title {
+    font-size: 27px;
+  }
+}

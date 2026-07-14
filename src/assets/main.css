@@ -94,7 +94,7 @@
   border-radius: 11px;
   color: #16857b;
   background: #dff2ee;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .header-map-button:hover {
@@ -644,6 +644,15 @@
   border: 1px solid #eadfd2;
   border-radius: 18px;
   padding: 22px;
+}
+
+.post-card:hover {
+  border-color: #f25a2a;
+}
+
+.post-card:focus-visible {
+  outline: 2px solid #f25a2a;
+  outline-offset: 3px;
 }
 
 

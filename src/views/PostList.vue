@@ -107,6 +107,10 @@ const goWrite = () => {
     },
   });
 };
+
+const goDetail = (id) => {
+  router.push(`/posts/detail/${id}`);
+};
 </script>
 
 <template>
@@ -154,7 +158,7 @@ const goWrite = () => {
       </p>
 
       <div v-else-if="posts.length" class="post-list">
-        <article v-for="post in posts" :key="post.id" class="post-card">
+        <article v-for="post in posts" :key="post.id" class="post-card" @click="goDetail(post.id)">
           <h2>{{ post.title }}</h2>
 
           <div class="post-meta">
