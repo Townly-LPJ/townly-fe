@@ -1,47 +1,58 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import SiteHeader from "./components/SiteHeader.vue";
+import CategoryBoard from "./components/CategoryBoard.vue";
+import ChatFloatingButton from "./components/ChatFloatingButton.vue";
+import CtaSection from "./components/CtaSection.vue";
+
+const scrollToCategories = () => {
+  document.querySelector("#category-board")?.scrollIntoView({
+    behavior: "smooth",
+  });
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="app-shell">
+    <SiteHeader />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+    <main>
+      <section class="hero">
+        <div class="hero__shade"></div>
 
-  <main>
-    <TheWelcome />
-  </main>
+        <div class="hero__content container">
+          <span class="hero__badge">
+            ⌾ 대전 권역 로컬 커뮤니티
+          </span>
+
+          <h1 class="hero__title">
+            대전의 진짜 정보,<br />
+            여기 townly에 다 있어요
+          </h1>
+
+          <p class="hero__description">
+            공공데이터에 흩어진 맛집 · 명소 · 축제 정보를 한 곳에서.
+          </p>
+
+          <div class="hero__actions">
+            <button
+              class="button button--primary"
+              @click="scrollToCategories"
+            >
+              게시판 둘러보기
+            </button>
+
+            <button class="button button--secondary">
+              지도로 보기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <CategoryBoard />
+
+      <CtaSection />
+    </main>
+
+    <ChatFloatingButton />
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
