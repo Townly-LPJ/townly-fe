@@ -3,6 +3,7 @@ import SiteHeader from "./components/SiteHeader.vue";
 import CategoryBoard from "./components/CategoryBoard.vue";
 import ChatFloatingButton from "./components/ChatFloatingButton.vue";
 import CtaSection from "./components/CtaSection.vue";
+import SiteFooter from "./components/SiteFooter.vue";
 
 const scrollToCategories = () => {
   document.querySelector("#category-board")?.scrollIntoView({
@@ -52,6 +53,9 @@ const scrollToCategories = () => {
 
       <CtaSection />
     </main>
+
+
+    <SiteFooter />
 
     <ChatFloatingButton />
   </div>
