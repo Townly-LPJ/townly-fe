@@ -56,7 +56,7 @@
 
     <!-- 버튼 -->
     <div class="actions">
-      <button class="cancel">취소</button>
+      <button class="cancel" @click="cancelWrite">취소</button>
 
       <button class="submit" @click="submitPost">등록하기</button>
     </div>
@@ -64,32 +64,45 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
+
+const isSubmitting = ref(false);
+const errorMessage = ref("");
 
 const categories = [
   {
     label: "맛집",
     value: "RESTAURANT",
+    slug: "restaurant",
   },
   {
-    label: "명소·관광",
+    label: "명소 · 관광",
     value: "ATTRACTION",
+    slug: "attraction",
   },
   {
-    label: "축제·행사",
+    label: "축제 · 행사",
     value: "FESTIVAL",
+    slug: "festival",
   },
   {
-    label: "카페·디저트",
+    label: "카페 · 디저트",
     value: "CAFE_DESSERT",
+    slug: "cafe_dessert",
   },
   {
     label: "여행 팁",
     value: "TRAVEL_TIP",
+    slug: "travel_tip",
   },
   {
     label: "동네 후기",
     value: "LOCAL_REVIEW",
+    slug: "local_review",
   },
 ];
 
@@ -101,9 +114,85 @@ const form = reactive({
   content: "",
 });
 
-const submitPost = () => {
-  console.log(form);
-  alert("작성 테스트");
+onMounted(() => {
+  const queryCategory = String(route.query.category ?? "");
+
+  const exists = categories.some((item) => item.value === queryCategory);
+
+  if (exists) {
+    form.category = queryCategory;
+  }
+});
+
+const validateForm = () => {
+  if (!form.title.trim()) {
+    return "제목을 입력해 주세요.";
+  }
+
+  if (!form.content.trim()) {
+    return "내용을 입력해 주세요.";
+  }
+
+  if (!form.nickname.trim()) {
+    return "닉네임을 입력해 주세요.";
+  }
+
+  if (form.password.length < 4) {
+    return "비밀번호는 4자 이상 입력해 주세요.";
+  }
+
+  return "";
+};
+
+const submitPost = async () => {
+  const validationMessage = validateForm();
+
+  if (validationMessage) {
+    errorMessage.value = validationMessage;
+    return;
+  }
+
+  isSubmitting.value = true;
+  errorMessage.value = "";
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        category: form.category,
+        title: form.title.trim(),
+        content: form.content.trim(),
+        nickname: form.nickname.trim(),
+        password: form.password,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+
+      throw new Error(errorData?.detail ?? `게시글 등록에 실패했습니다. (${response.status})`);
+    }
+
+    await response.json().catch(() => null);
+
+    const selectedCategory = categories.find((item) => item.value === form.category);
+
+    router.push(`/posts/${selectedCategory.slug}`);
+  } catch (error) {
+    console.error("게시글 등록 실패:", error);
+
+    errorMessage.value =
+      error instanceof Error ? error.message : "게시글 등록 중 오류가 발생했습니다.";
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
+const cancelWrite = () => {
+  router.back();
 };
 </script>
 

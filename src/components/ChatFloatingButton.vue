@@ -1,131 +1,114 @@
-<!-- <template>
-  <button type="button" class="chat-floating-button">
-    <span class="chat-floating-button__icon">◯</span>
-    여행 챗봇
-  </button>
-</template> -->
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
-import { sendChatMessage } from '../api/chatApi'
+import { Bot } from "lucide-vue-next";
+import { computed, nextTick, onMounted, ref } from "vue";
+import { sendChatMessage } from "../api/chatApi";
 
-const isOpen = ref(false)
-const inputMessage = ref('')
-const isLoading = ref(false)
-const messageContainer = ref(null)
+const isOpen = ref(false);
+const inputMessage = ref("");
+const isLoading = ref(false);
+const messageContainer = ref(null);
 
 const messages = ref([
   {
     id: crypto.randomUUID(),
-    role: 'assistant',
+    role: "assistant",
     content:
-      '안녕하세요! 대전 여행 도우미 townly 봇이에요. 맛집, 명소, 축제, 숙박 등 무엇이든 물어보세요.',
+      "안녕하세요! 대전 여행 도우미 townly 봇이에요. 맛집, 명소, 축제, 숙박 등 무엇이든 물어보세요.",
     places: [],
   },
-])
+]);
 
-const quickQuestions = [
-  '성심당 웨이팅 팁',
-  '비 오는 날 갈 곳',
-  '대청호 코스 추천',
-]
+const quickQuestions = ["성심당 웨이팅 팁", "비 오는 날 갈 곳", "대청호 코스 추천"];
 
 const canSend = computed(() => {
-  return inputMessage.value.trim().length > 0 && !isLoading.value
-})
+  return inputMessage.value.trim().length > 0 && !isLoading.value;
+});
 
 function toggleChat() {
-  isOpen.value = !isOpen.value
+  isOpen.value = !isOpen.value;
 
   if (isOpen.value) {
-    scrollToBottom()
+    scrollToBottom();
   }
 }
 
 function closeChat() {
-  isOpen.value = false
+  isOpen.value = false;
 }
 
 function createHistory() {
   return messages.value
     .filter((message) => {
-      return message.role === 'user' || message.role === 'assistant'
+      return message.role === "user" || message.role === "assistant";
     })
     .slice(-8)
     .map((message) => ({
       role: message.role,
       content: message.content,
-    }))
+    }));
 }
 
 async function submitMessage(messageText = inputMessage.value) {
-  const trimmedMessage = messageText.trim()
+  const trimmedMessage = messageText.trim();
 
   if (!trimmedMessage || isLoading.value) {
-    return
+    return;
   }
 
   // 현재 사용자 메시지를 추가하기 전의 대화만 history로 전달합니다.
-  const history = createHistory()
+  const history = createHistory();
 
   messages.value.push({
     id: crypto.randomUUID(),
-    role: 'user',
+    role: "user",
     content: trimmedMessage,
     places: [],
-  })
+  });
 
-  inputMessage.value = ''
-  isLoading.value = true
+  inputMessage.value = "";
+  isLoading.value = true;
 
-  await scrollToBottom()
+  await scrollToBottom();
 
   try {
-    const response = await sendChatMessage(
-      trimmedMessage,
-      history,
-    )
+    const response = await sendChatMessage(trimmedMessage, history);
 
     messages.value.push({
       id: crypto.randomUUID(),
-      role: 'assistant',
+      role: "assistant",
       content: response.answer,
-      places: Array.isArray(response.places)
-        ? response.places
-        : [],
-    })
+      places: Array.isArray(response.places) ? response.places : [],
+    });
   } catch (error) {
     messages.value.push({
       id: crypto.randomUUID(),
-      role: 'assistant',
-      content:
-        error instanceof Error
-          ? error.message
-          : '챗봇 연결 중 오류가 발생했습니다.',
+      role: "assistant",
+      content: error instanceof Error ? error.message : "챗봇 연결 중 오류가 발생했습니다.",
       places: [],
       isError: true,
-    })
+    });
   } finally {
-    isLoading.value = false
-    await scrollToBottom()
+    isLoading.value = false;
+    await scrollToBottom();
   }
 }
 
 function selectQuickQuestion(question) {
-  submitMessage(question)
+  submitMessage(question);
 }
 
 function handleEnter(event) {
   // 한글 입력 조합 중 Enter가 중복 실행되는 것을 방지합니다.
   if (event.isComposing) {
-    return
+    return;
   }
 
   if (event.shiftKey) {
-    return
+    return;
   }
 
-  event.preventDefault()
-  submitMessage()
+  event.preventDefault();
+  submitMessage();
 }
 
 function openMap(place) {
@@ -138,55 +121,41 @@ function openMap(place) {
     const url =
       `https://map.kakao.com/link/map/` +
       `${encodeURIComponent(place.title)},` +
-      `${place.latitude},${place.longitude}`
+      `${place.latitude},${place.longitude}`;
 
-    window.open(url, '_blank', 'noopener,noreferrer')
-    return
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
   }
 
-  const keyword = [
-    place.title,
-    place.address,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const keyword = [place.title, place.address].filter(Boolean).join(" ");
 
-  const searchUrl =
-    `https://map.kakao.com/link/search/` +
-    encodeURIComponent(keyword)
+  const searchUrl = `https://map.kakao.com/link/search/` + encodeURIComponent(keyword);
 
-  window.open(searchUrl, '_blank', 'noopener,noreferrer')
+  window.open(searchUrl, "_blank", "noopener,noreferrer");
 }
 
 async function scrollToBottom() {
-  await nextTick()
+  await nextTick();
 
   if (!messageContainer.value) {
-    return
+    return;
   }
 
-  messageContainer.value.scrollTop =
-    messageContainer.value.scrollHeight
+  messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
 }
 
 onMounted(() => {
-  scrollToBottom()
-})
+  scrollToBottom();
+});
 </script>
 
 <template>
   <div class="chat-widget">
     <Transition name="chat-panel">
-      <section
-        v-if="isOpen"
-        class="chat-window"
-        aria-label="townly 여행 챗봇"
-      >
+      <section v-if="isOpen" class="chat-window" aria-label="townly 여행 챗봇">
         <header class="chat-header">
           <div class="chat-header__identity">
-            <div class="chat-header__icon">
-              ✨
-            </div>
+            <div class="chat-header__icon">✨</div>
 
             <div>
               <h2>townly 여행 도우미</h2>
@@ -204,47 +173,29 @@ onMounted(() => {
           </button>
         </header>
 
-        <div
-          ref="messageContainer"
-          class="chat-messages"
-          aria-live="polite"
-        >
+        <div ref="messageContainer" class="chat-messages" aria-live="polite">
           <article
             v-for="message in messages"
             :key="message.id"
             class="message-row"
             :class="{
               'message-row--user': message.role === 'user',
-              'message-row--assistant':
-                message.role === 'assistant',
+              'message-row--assistant': message.role === 'assistant',
             }"
           >
             <div
               class="message-bubble"
               :class="{
-                'message-bubble--user':
-                  message.role === 'user',
-                'message-bubble--assistant':
-                  message.role === 'assistant',
-                'message-bubble--error':
-                  message.isError,
+                'message-bubble--user': message.role === 'user',
+                'message-bubble--assistant': message.role === 'assistant',
+                'message-bubble--error': message.isError,
               }"
             >
               {{ message.content }}
             </div>
 
-            <div
-              v-if="
-                message.role === 'assistant' &&
-                message.places?.length
-              "
-              class="place-list"
-            >
-              <article
-                v-for="place in message.places"
-                :key="place.content_id"
-                class="place-card"
-              >
+            <div v-if="message.role === 'assistant' && message.places?.length" class="place-list">
+              <article v-for="place in message.places" :key="place.content_id" class="place-card">
                 <img
                   v-if="place.image_url"
                   :src="place.image_url"
@@ -253,12 +204,7 @@ onMounted(() => {
                   loading="lazy"
                 />
 
-                <div
-                  v-else
-                  class="place-card__image-placeholder"
-                >
-                  📍
-                </div>
+                <div v-else class="place-card__image-placeholder">📍</div>
 
                 <div class="place-card__body">
                   <div class="place-card__category">
@@ -271,15 +217,9 @@ onMounted(() => {
                     {{ place.address }}
                   </p>
 
-                  <p v-if="place.telephone">
-                    ☎ {{ place.telephone }}
-                  </p>
+                  <p v-if="place.telephone">☎ {{ place.telephone }}</p>
 
-                  <button
-                    type="button"
-                    class="place-card__map-button"
-                    @click="openMap(place)"
-                  >
+                  <button type="button" class="place-card__map-button" @click="openMap(place)">
                     지도에서 보기
                   </button>
                 </div>
@@ -287,14 +227,8 @@ onMounted(() => {
             </div>
           </article>
 
-          <div
-            v-if="isLoading"
-            class="message-row message-row--assistant"
-          >
-            <div
-              class="message-bubble message-bubble--assistant typing"
-              aria-label="답변 생성 중"
-            >
+          <div v-if="isLoading" class="message-row message-row--assistant">
+            <div class="message-bubble message-bubble--assistant typing" aria-label="답변 생성 중">
               <span />
               <span />
               <span />
@@ -350,13 +284,10 @@ onMounted(() => {
       aria-label="여행 챗봇 열기"
       @click="toggleChat"
     >
-      <span class="chat-floating-button__icon">
-        {{ isOpen ? '×' : '💬' }}
-      </span>
+      <span v-if="isOpen">×</span>
+      <Bot v-else :size="22" :stroke-width="2.3" />
 
-      <span v-if="!isOpen">
-        여행 챗봇
-      </span>
+      <span v-if="!isOpen"> 여행 챗봇 </span>
     </button>
   </div>
 </template>
