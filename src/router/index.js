@@ -4,8 +4,14 @@ import Home from "../views/Home.vue";
 import PostList from "../views/PostList.vue";
 import PostWriteView from "../views/PostWriteView.vue";
 import PostDetailView from "../views/PostDetailView.vue";
+import MapView from "../views/MapView.vue";
 
 const routes = [
+  {
+    path: "/map",
+    name: "Map",
+    component: MapView,
+  },
   {
     path: "/",
     name: "Home",

@@ -1,13 +1,20 @@
 <script setup>
 import { Search, MapPin } from "lucide-vue-next";
+import { useRouter } from "vue-router";
 
 import CategoryBoard from "../components/CategoryBoard.vue";
 import CtaSection from "../components/CtaSection.vue";
+
+const router = useRouter();
 
 const scrollToCategories = () => {
   document.querySelector("#category-board")?.scrollIntoView({
     behavior: "smooth",
   });
+};
+
+const goMap = () => {
+  router.push("/map");
 };
 </script>
 
@@ -34,7 +41,7 @@ const scrollToCategories = () => {
             게시판 둘러보기
           </button>
 
-          <button class="button button--secondary">
+          <button class="button button--secondary" @click="goMap">
             <MapPin :size="19" :stroke-width="2.3" />
             지도로 보기
           </button>
