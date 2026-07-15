@@ -26,25 +26,23 @@
 }
 
 .category-list button {
-    padding: 10px 20px;
-
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-
-    background: white;
-    color: #29241f;
-
-    transition: 0.2s;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid #eadfd2;
+  background: white;
+  color: #514943;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .category-list button:hover {
-    border-color: var(--color-primary);
+  color: #f25a2a;
 }
 
 .category-list button.active {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
+  background: #f25a2a;
+  color: white;
+  border-color: #f25a2a;
 }
 
 
