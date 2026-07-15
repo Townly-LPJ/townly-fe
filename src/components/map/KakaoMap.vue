@@ -25,7 +25,10 @@ let map;
 let markers = [];
 
 const clearMarkers = () => {
-  markers.forEach(({ marker }) => marker.setMap(null));
+  markers.forEach(({ marker }) => {
+    marker.setMap(null);
+  });
+
   markers = [];
 };
 
@@ -36,18 +39,12 @@ const renderMarkers = () => {
 
   clearMarkers();
 
-  const markerImage = new kakaoApi.maps.MarkerImage(markerIcon, new kakaoApi.maps.Size(36, 48));
+  const markerImage = new kakaoApi.maps.MarkerImage(markerIcon, new kakaoApi.maps.Size(38, 50), {
+    offset: new kakaoApi.maps.Point(19, 50),
+  });
 
   props.places.forEach((place) => {
-    const isValidCoordinate =
-      Number.isFinite(place.lat) &&
-      Number.isFinite(place.lng) &&
-      place.lat >= 33 &&
-      place.lat <= 39 &&
-      place.lng >= 124 &&
-      place.lng <= 132;
-
-    if (!isValidCoordinate) {
+    if (!Number.isFinite(place.lat) || !Number.isFinite(place.lng)) {
       return;
     }
 
@@ -55,7 +52,7 @@ const renderMarkers = () => {
       map,
       position: new kakaoApi.maps.LatLng(place.lat, place.lng),
       title: place.title,
-      image: markerImage, // ⭐ 추가
+      image: markerImage,
     });
 
     kakaoApi.maps.event.addListener(marker, "click", () => {

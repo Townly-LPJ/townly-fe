@@ -223,3 +223,23 @@
     max-height: 420px;
   }
 }
+
+.map-info-window {
+  min-width: 180px;
+  padding: 12px 14px;
+  background: white;
+}
+
+.map-info-window strong {
+  display: block;
+  color: #29241f;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.map-info-window p {
+  margin: 6px 0 0;
+  color: #91857a;
+  font-size: 12px;
+  line-height: 1.5;
+}

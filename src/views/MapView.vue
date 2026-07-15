@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { MapPin } from "lucide-vue-next";
 
 import KakaoMap from "../components/map/KakaoMap.vue";
@@ -50,6 +50,31 @@ const changeCategory = (category) => {
   selectedPlaceId.value = null;
   selectedCategory.value = category;
 };
+
+const placeCardRefs = new Map();
+
+const setPlaceCardRef = (element, placeId) => {
+  if (element) {
+    placeCardRefs.set(String(placeId), element);
+  } else {
+    placeCardRefs.delete(String(placeId));
+  }
+};
+
+watch(selectedPlaceId, async (newPlaceId) => {
+  if (newPlaceId == null) {
+    return;
+  }
+
+  await nextTick();
+
+  const selectedCard = placeCardRefs.get(String(newPlaceId));
+
+  selectedCard?.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+  });
+});
 </script>
 
 <template>
@@ -92,10 +117,11 @@ const changeCategory = (category) => {
           <button
             v-for="place in filteredPlaces"
             :key="`${place.category}-${place.id}`"
+            :ref="(element) => setPlaceCardRef(element, place.id)"
             type="button"
             class="map-place-card"
             :class="{
-              active: selectedPlaceId === place.id,
+              active: String(selectedPlaceId) === String(place.id),
             }"
             @click="selectPlace(place.id)"
           >
