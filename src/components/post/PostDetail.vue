@@ -6,6 +6,7 @@ import PasswordModal from "../common/PasswordModal.vue";
 
 import { timeAgo } from "../../utils/date";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const route = useRoute();
 const router = useRouter();
 
@@ -39,7 +40,7 @@ const fetchPost = async () => {
   errorMessage.value = "";
 
   try {
-    const response = await fetch(`http://localhost:8000/api/posts/${route.params.id}`);
+    const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
@@ -81,16 +82,11 @@ const confirmPassword = async (password) => {
 
   // 삭제
   if (modalType.value === "delete") {
-    const response = await fetch(`http://localhost:8000/api/posts/${post.value.id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`, {
       method: "DELETE",
-
       headers: {
         "Content-Type": "application/json",
       },
-
-      body: JSON.stringify({
-        password,
-      }),
     });
 
     if (response.ok) {

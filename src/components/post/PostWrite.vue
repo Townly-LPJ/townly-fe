@@ -55,6 +55,9 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { supabase } from "@/lib/supabase";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const route = useRoute();
 const router = useRouter();
 const isSubmitting = ref(false);
 const uploading = ref(false);
@@ -113,7 +116,7 @@ const handleFileChange = async (event) => {
 const submitPost = async () => {
   isSubmitting.value = true;
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/posts", {
+    const response = await fetch(`${API_BASE_URL}/api/posts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form }),

@@ -4,6 +4,8 @@ import { useRoute, useRouter } from "vue-router";
 import { Search, SquarePen } from "lucide-vue-next";
 import { timeAgo } from "../utils/date";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const route = useRoute();
 const router = useRouter();
 
@@ -71,7 +73,7 @@ const fetchPosts = async () => {
   errorMessage.value = "";
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/posts?category=${info.value.apiCode}`);
+    const response = await fetch(`${API_BASE_URL}/api/posts?category=${info.value.apiCode}`);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
