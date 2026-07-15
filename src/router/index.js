@@ -22,6 +22,11 @@ const routes = [
     component: PostDetailView,
   },
   {
+    path: "/posts/edit/:id",
+    name: "PostEdit",
+    component: () => import("@/views/PostEditView.vue"),
+  },
+  {
     path: "/posts/:category",
     name: "PostList",
     component: PostList,

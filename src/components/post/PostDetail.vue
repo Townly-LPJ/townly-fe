@@ -2,6 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Share2, ChevronLeft, Pencil, Trash2 } from "lucide-vue-next";
+import PasswordModal from "../common/PasswordModal.vue";
 
 import { timeAgo } from "../../utils/date";
 
@@ -11,6 +12,9 @@ const router = useRouter();
 const post = ref(null);
 const loading = ref(false);
 const errorMessage = ref("");
+const showPasswordModal = ref(false);
+
+const modalType = ref("");
 
 const categoryMap = {
   RESTAURANT: {
@@ -73,12 +77,50 @@ const goBackToList = () => {
   router.push(`/posts/${categoryInfo.value.slug}`);
 };
 
-const goEdit = () => {
-  console.log("수정 기능 연결 예정");
+const openEditModal = () => {
+  modalType.value = "edit";
+
+  showPasswordModal.value = true;
 };
 
-const deletePost = () => {
-  console.log("삭제 기능 연결 예정");
+const openDeleteModal = () => {
+  modalType.value = "delete";
+
+  showPasswordModal.value = true;
+};
+
+const confirmPassword = async (password) => {
+  // 수정
+  if (modalType.value === "edit") {
+    sessionStorage.setItem("editPassword", password);
+
+    router.push(`/posts/edit/${post.value.id}`);
+  }
+
+  // 삭제
+  if (modalType.value === "delete") {
+    const response = await fetch(`http://localhost:8000/api/posts/${post.value.id}`, {
+      method: "DELETE",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        password,
+      }),
+    });
+
+    if (response.ok) {
+      alert("삭제되었습니다.");
+
+      router.push(`/posts/${categoryInfo.value.slug}`);
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+    }
+  }
+
+  showPasswordModal.value = false;
 };
 
 watch(
@@ -138,12 +180,12 @@ watch(
         </div>
 
         <div class="post-detail-actions-right">
-          <button type="button" class="post-detail-action-button" @click="goEdit">
+          <button type="button" class="post-detail-action-button" @click="openEditModal">
             <Pencil :size="17" />
             수정
           </button>
 
-          <button type="button" class="post-detail-action-button" @click="deletePost">
+          <button type="button" class="post-detail-action-button" @click="openDeleteModal">
             <Trash2 :size="17" />
             삭제
           </button>
@@ -151,6 +193,13 @@ watch(
       </div>
     </article>
   </div>
+
+  <PasswordModal
+    v-if="showPasswordModal"
+    :title="modalType === 'delete' ? '게시글 삭제' : '게시글 수정'"
+    @confirm="confirmPassword"
+    @close="showPasswordModal = false"
+  />
 </template>
 
 <style src="./PostDetail.css"></style>
