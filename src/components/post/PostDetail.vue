@@ -82,7 +82,7 @@ const confirmPassword = async (password) => {
 
   // 삭제
   if (modalType.value === "delete") {
-    const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`);, {
+    const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`), {
       method: "DELETE",
 
       headers: {
