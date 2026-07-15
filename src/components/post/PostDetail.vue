@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue"; // 👈 onMounted 추가
 import { useRoute, useRouter } from "vue-router";
 import { Share2, ChevronLeft, Pencil, Trash2 } from "lucide-vue-next";
 import PasswordModal from "../common/PasswordModal.vue";
@@ -121,6 +121,58 @@ const confirmPassword = async (password) => {
   }
 
   showPasswordModal.value = false;
+};
+
+onMounted(() => {
+  if (window.Kakao) {
+    if (!window.Kakao.isInitialized()) {
+      const kakaoKey = import.meta.env.VITE_KAKAO_APP_KEY;
+      console.log("로드된 카카오 키:", kakaoKey);
+      window.Kakao.init(kakaoKey);
+      console.log("카카오 SDK 초기화 완료");
+    }
+  } else {
+    console.warn("Kakao SDK가 로드되지 않았습니다. index.html을 확인해 주세요.");
+  }
+});
+
+const sharePost = () => {
+  if (!window.Kakao) {
+    alert("카카오 SDK를 사용할 수 없습니다.");
+    return;
+  }
+
+  if (!post.value) return;
+
+  // 본문 미리보기 글자 수 조절 (최대 60자)
+  const descriptionText = post.value.content
+    ? post.value.content.slice(0, 60) + (post.value.content.length > 60 ? "..." : "")
+    : "상세 내용을 확인해 보세요!";
+
+  const shareUrl = `http://localhost:5173/posts/detail/${post.value.id}`;
+  window.Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: `[${categoryInfo.value.label}] ${post.value.title}`,
+      description: descriptionText,
+      // 임시 썸네일 이미지 (글에 등록된 대표 이미지가 있다면 post.value.imageUrl 등으로 동적 매핑 가능)
+      imageUrl: "https://picsum.photos/800/420",
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
+    },
+    buttons: [
+      {
+        title: "여행 후기 보러가기",
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
+      },
+    ],
+    installTalk: true,
+  });
 };
 
 watch(
