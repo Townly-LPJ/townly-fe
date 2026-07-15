@@ -1,6 +1,5 @@
 <script setup>
 import { Compass, MapPin } from "lucide-vue-next";
-
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -35,6 +34,10 @@ const goHome = () => {
 const goCategory = (code) => {
   router.push(`/posts/${code}`);
 };
+
+const goMap = () => {
+  router.push("/map");
+};
 </script>
 
 <template>
@@ -62,7 +65,7 @@ const goCategory = (code) => {
         </button>
       </nav>
 
-      <button type="button" class="header-map-button">
+      <button type="button" class="header-map-button" @click="goMap">
         <MapPin :size="18" :stroke-width="2.3" />
         지도
       </button>
