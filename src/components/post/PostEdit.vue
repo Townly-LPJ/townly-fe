@@ -2,6 +2,8 @@
 import { reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const route = useRoute();
 const router = useRouter();
 
@@ -49,8 +51,7 @@ const categories = [
 
 // 기존 게시글 조회
 const fetchPost = async () => {
-  const response = await fetch(`http://localhost:8000/api/posts/${route.params.id}`);
-
+  const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`);
   const data = await response.json();
 
   form.category = data.category;
@@ -61,7 +62,7 @@ const fetchPost = async () => {
 
 // 수정 요청
 const updatePost = async () => {
-  const response = await fetch(`http://localhost:8000/api/posts/${route.params.id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`, {
     method: "PUT",
 
     headers: {

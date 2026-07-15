@@ -67,6 +67,8 @@
 import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const route = useRoute();
 const router = useRouter();
 
@@ -156,7 +158,7 @@ const submitPost = async () => {
   errorMessage.value = "";
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/posts", {
+    const response = await fetch(`${API_BASE_URL}/api/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
