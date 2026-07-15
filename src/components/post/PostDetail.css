@@ -33,6 +33,22 @@
   background: white;
 }
 
+.post-detail-image {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.post-detail-image img {
+  max-width: 100%;
+  /* 가로 폭을 넘지 않게 */
+  max-height: 300px;
+  /* 높이 제한 */
+  border-radius: 8px;
+  /* 둥근 모서리 */
+  object-fit: contain;
+  /* 이미지가 찌그러지지 않게 */
+}
+
 .post-detail-category {
   display: inline-flex;
   padding: 5px 9px;

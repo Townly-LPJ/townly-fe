@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch, onMounted } from "vue"; // 👈 onMounted 추가
+import { computed, ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Share2, ChevronLeft, Pencil, Trash2 } from "lucide-vue-next";
 import PasswordModal from "../common/PasswordModal.vue";
@@ -17,30 +17,12 @@ const showPasswordModal = ref(false);
 const modalType = ref("");
 
 const categoryMap = {
-  RESTAURANT: {
-    label: "맛집",
-    slug: "restaurant",
-  },
-  ATTRACTION: {
-    label: "명소 · 관광",
-    slug: "attraction",
-  },
-  FESTIVAL: {
-    label: "축제 · 행사",
-    slug: "festival",
-  },
-  CAFE_DESSERT: {
-    label: "카페 · 디저트",
-    slug: "cafe_dessert",
-  },
-  TRAVEL_TIP: {
-    label: "여행 팁",
-    slug: "travel_tip",
-  },
-  LOCAL_REVIEW: {
-    label: "동네 후기",
-    slug: "local_review",
-  },
+  RESTAURANT: { label: "맛집", slug: "restaurant" },
+  ATTRACTION: { label: "명소 · 관광", slug: "attraction" },
+  FESTIVAL: { label: "축제 · 행사", slug: "festival" },
+  CAFE_DESSERT: { label: "카페 · 디저트", slug: "cafe_dessert" },
+  TRAVEL_TIP: { label: "여행 팁", slug: "travel_tip" },
+  LOCAL_REVIEW: { label: "동네 후기", slug: "local_review" },
 };
 
 const categoryInfo = computed(() => {
@@ -127,12 +109,8 @@ onMounted(() => {
   if (window.Kakao) {
     if (!window.Kakao.isInitialized()) {
       const kakaoKey = import.meta.env.VITE_KAKAO_APP_KEY;
-      console.log("로드된 카카오 키:", kakaoKey);
       window.Kakao.init(kakaoKey);
-      console.log("카카오 SDK 초기화 완료");
     }
-  } else {
-    console.warn("Kakao SDK가 로드되지 않았습니다. index.html을 확인해 주세요.");
   }
 });
 
@@ -144,19 +122,19 @@ const sharePost = () => {
 
   if (!post.value) return;
 
-  // 본문 미리보기 글자 수 조절 (최대 60자)
   const descriptionText = post.value.content
     ? post.value.content.slice(0, 60) + (post.value.content.length > 60 ? "..." : "")
     : "상세 내용을 확인해 보세요!";
 
   const shareUrl = `http://localhost:5173/posts/detail/${post.value.id}`;
+
   window.Kakao.Share.sendDefault({
     objectType: "feed",
     content: {
       title: `[${categoryInfo.value.label}] ${post.value.title}`,
       description: descriptionText,
-      // 임시 썸네일 이미지 (글에 등록된 대표 이미지가 있다면 post.value.imageUrl 등으로 동적 매핑 가능)
-      imageUrl: "https://picsum.photos/800/420",
+      // 🚨 동적 이미지 매핑
+      imageUrl: post.value.image_url || "https://picsum.photos/800/420",
       link: {
         mobileWebUrl: shareUrl,
         webUrl: shareUrl,
@@ -171,7 +149,6 @@ const sharePost = () => {
         },
       },
     ],
-    installTalk: true,
   });
 };
 
@@ -218,6 +195,10 @@ watch(
       </div>
 
       <div class="post-detail-divider"></div>
+
+      <div v-if="post.image_url" class="post-detail-image">
+        <img :src="post.image_url" alt="게시글 이미지" />
+      </div>
 
       <div class="post-detail-content">
         {{ post.content }}
