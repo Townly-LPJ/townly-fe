@@ -161,14 +161,19 @@ const goDetail = (id) => {
 
       <div v-else-if="posts.length" class="post-list">
         <article v-for="post in posts" :key="post.id" class="post-card" @click="goDetail(post.id)">
-          <h2>{{ post.title }}</h2>
+          <div v-if="post.image_url" class="post-thumbnail">
+            <img :src="post.image_url" alt="썸네일" />
+          </div>
 
-          <div class="post-meta">
-            <span class="post-author">
-              {{ post.nickname }}
-            </span>
+          <div class="post-content-area">
+            <h2>{{ post.title }}</h2>
 
-            <span> · {{ timeAgo(post.created_at) }} </span>
+            <div class="post-meta">
+              <span class="post-author">
+                {{ post.nickname }}
+              </span>
+              <span> · {{ timeAgo(post.created_at) }} </span>
+            </div>
           </div>
         </article>
       </div>
