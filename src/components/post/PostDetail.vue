@@ -82,9 +82,7 @@ const confirmPassword = async (password) => {
 
   // 삭제
   if (modalType.value === "delete") {
-  const response = await fetch(
-    `${API_BASE_URL}/api/posts/${route.params.id}`,
-    {
+    const response = await fetch(`${API_BASE_URL}/api/posts/${route.params.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -92,18 +90,17 @@ const confirmPassword = async (password) => {
       body: JSON.stringify({
         password: password,
       }),
-    },
-  );
+    });
 
-  if (response.ok) {
-    alert("삭제되었습니다.");
-    router.push(`/posts/${categoryInfo.value.slug}`);
-  } else {
-    const error = await response.json();
-    console.error("게시글 삭제 실패:", error);
-    alert("비밀번호가 틀렸습니다.");
+    if (response.ok) {
+      alert("삭제되었습니다.");
+      router.push(`/posts/${categoryInfo.value.slug}`);
+    } else {
+      const error = await response.json();
+      console.error("게시글 삭제 실패:", error);
+      alert("비밀번호가 틀렸습니다.");
+    }
   }
-}
 
   showPasswordModal.value = false;
 };
@@ -129,7 +126,7 @@ const sharePost = () => {
     ? post.value.content.slice(0, 60) + (post.value.content.length > 60 ? "..." : "")
     : "상세 내용을 확인해 보세요!";
 
-  const shareUrl = `http://localhost:5173/posts/detail/${post.value.id}`;
+  const shareUrl = `https://townly-fe.vercel.app/posts/detail/${post.value.id}`;
 
   window.Kakao.Share.sendDefault({
     objectType: "feed",
